@@ -1,7 +1,3 @@
-Got it — this is where Python generators shine.
-You want `0-stream_users.py` to **connect to the database**, fetch rows one at a time, and `yield` them instead of loading everything into memory.
-
-Here’s exactly how you can implement it:
 
 ---
 
@@ -80,5 +76,3 @@ Output should look like:
 ```
 
 ---
-
-Would you like me to also add **error handling** for cases where the table doesn’t exist (so your script fails gracefully instead of crashing)? This is a good practice for production use.

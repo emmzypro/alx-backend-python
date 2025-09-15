@@ -1,3 +1,13 @@
+Got it — this is where Python generators shine.
+You want `0-stream_users.py` to **connect to the database**, fetch rows one at a time, and `yield` them instead of loading everything into memory.
+
+Here’s exactly how you can implement it:
+
+---
+
+## `0-stream_users.py`
+
+```python
 #!/usr/bin/python3
 import mysql.connector
 
@@ -26,4 +36,49 @@ def stream_users():
             cursor.close()
         if connection:
             connection.close()
+```
 
+---
+
+### 🔑 Key Points:
+
+✅ **Generator Function**
+
+* `yield row` makes this a generator — rows are returned lazily, one at a time.
+* Uses **only one loop** as required.
+
+✅ **Memory Efficient**
+
+* This doesn’t load the entire table into memory (good for large datasets).
+
+✅ **Dictionary Cursor**
+
+* Returns each row as a dictionary (`{'user_id': ..., 'name': ..., ...}`)
+  — exactly like in your example output.
+
+---
+
+### Test with `1-main.py`
+
+You already have:
+
+```python
+#!/usr/bin/python3
+from itertools import islice
+stream_users = __import__('0-stream_users')
+
+for user in islice(stream_users.stream_users(), 6):
+    print(user)
+```
+
+Output should look like:
+
+```
+{'user_id': '00234e50-34eb-4ce2-94ec-26e3fa749796', 'name': 'Dan Altenwerth Jr.', 'email': 'Molly59@gmail.com', 'age': 67}
+{'user_id': '006bfede-724d-4cdd-a2a6-59700f40d0da', 'name': 'Glenda Wisozk', 'email': 'Miriam21@gmail.com', 'age': 119}
+...
+```
+
+---
+
+Would you like me to also add **error handling** for cases where the table doesn’t exist (so your script fails gracefully instead of crashing)? This is a good practice for production use.
